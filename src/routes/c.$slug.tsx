@@ -1,4 +1,4 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, useNavigate, Outlet, useRouterState } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { z } from "zod";
 import { toast } from "sonner";
@@ -31,6 +31,13 @@ const nameSchema = z
   .regex(/^[\p{L}\s'.-]+$/u, "Use apenas letras");
 
 function PublicCert() {
+  const routerState = useRouterState();
+  const isObrigado = routerState.location.pathname.endsWith("/obrigado");
+
+  if (isObrigado) {
+    return <Outlet />;
+  }
+
   const { slug } = Route.useParams();
   const navigate = useNavigate();
   const [cert, setCert] = useState<Cert | null>(null);
