@@ -1,29 +1,33 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { Award } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Your App" },
-      { name: "description", content: "Replace this with a one-sentence description of your app." },
-      { property: "og:title", content: "Your App" },
-      { property: "og:description", content: "Replace this with a one-sentence description of your app." },
+      { title: "Gerador de Certificados" },
+      { name: "description", content: "Crie e distribua certificados em PDF com um link." },
     ],
   }),
   component: Index,
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
 function Index() {
   return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
+    <main className="flex min-h-screen flex-col items-center justify-center bg-background px-6 text-center">
+      <Award className="mb-6 h-16 w-16 text-primary" />
+      <h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
+        Gerador de Certificados
+      </h1>
+      <p className="mt-4 max-w-xl text-base text-muted-foreground">
+        Configure modelos no painel administrativo, compartilhe um link e seus
+        participantes geram o próprio certificado em PDF.
+      </p>
+      <div className="mt-8">
+        <Button asChild size="lg">
+          <Link to="/login">Acessar painel</Link>
+        </Button>
+      </div>
+    </main>
   );
 }
