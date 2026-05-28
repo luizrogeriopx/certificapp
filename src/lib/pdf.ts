@@ -42,12 +42,6 @@ export async function generateCertificatePdf(data: CertificateData): Promise<voi
     pdf.rect(0, 0, pageW, pageH, "F");
   }
 
-  // Subtle overlay for readability
-  pdf.setFillColor(255, 255, 255);
-  pdf.setGState(new (pdf as any).GState({ opacity: 0.55 }));
-  pdf.rect(pageW * 0.08, pageH * 0.18, pageW * 0.84, pageH * 0.64, "F");
-  pdf.setGState(new (pdf as any).GState({ opacity: 1 }));
-
   // Title
   pdf.setTextColor(30, 30, 30);
   pdf.setFont("times", "bold");

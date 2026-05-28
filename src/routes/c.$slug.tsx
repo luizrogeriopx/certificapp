@@ -114,15 +114,7 @@ function PublicCert() {
           <CardDescription>{cert.course_name}</CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
-          {bgUrl && (
-            <div className="overflow-hidden rounded-md border bg-background">
-              <img
-                src={bgUrl}
-                alt="Prévia do fundo do certificado"
-                className="aspect-[1.414/1] w-full object-cover"
-              />
-            </div>
-          )}
+
           <form onSubmit={handleGenerate} className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="name">Nome completo</Label>
