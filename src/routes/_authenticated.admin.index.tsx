@@ -71,7 +71,7 @@ function AdminList() {
           {certs.map((c) => (
             <Card key={c.id}>
               <CardContent className="flex items-center justify-between gap-4 py-4">
-                <Link to="/_authenticated/admin/$id" params={{ id: c.id }} className="flex-1 min-w-0">
+                <Link to="/admin/$id" params={{ id: c.id }} className="flex-1 min-w-0">
                   <p className="truncate font-medium">{c.title}</p>
                   <p className="truncate text-sm text-muted-foreground">{c.course_name}</p>
                 </Link>

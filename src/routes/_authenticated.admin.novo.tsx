@@ -75,7 +75,7 @@ function NewCertificate() {
       if (error) throw error;
 
       toast.success("Certificado criado!");
-      navigate({ to: "/_authenticated/admin/$id", params: { id: data.id } });
+      navigate({ to: "/admin/$id", params: { id: data.id } });
     } catch (err: any) {
       toast.error(err.message ?? "Erro ao salvar");
     } finally {
