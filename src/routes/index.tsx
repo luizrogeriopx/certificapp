@@ -25,7 +25,9 @@ function Index() {
       </p>
       <div className="mt-8">
         <Button asChild size="lg">
-          <a href="mailto:contato@exemplo.com">Fale conosco</a>
+          <a href="https://wa.me/5562996897483" target="_blank" rel="noreferrer">
+            Fale conosco
+          </a>
         </Button>
       </div>
     </main>
