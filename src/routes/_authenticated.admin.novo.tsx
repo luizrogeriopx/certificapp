@@ -19,6 +19,7 @@ const schema = z.object({
   course_name: z.string().trim().min(2).max(160),
   location: z.string().trim().min(2).max(120),
   event_date: z.string().min(1),
+  phrase: z.string().trim().min(2).max(120),
 });
 
 function NewCertificate() {
@@ -27,12 +28,13 @@ function NewCertificate() {
   const [course, setCourse] = useState("");
   const [location, setLocation] = useState("");
   const [date, setDate] = useState("");
+  const [phrase, setPhrase] = useState("concluiu com êxito o curso");
   const [file, setFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const parsed = schema.safeParse({ title, course_name: course, location, event_date: date });
+    const parsed = schema.safeParse({ title, course_name: course, location, event_date: date, phrase });
     if (!parsed.success) {
       toast.error(parsed.error.issues[0].message);
       return;
@@ -69,6 +71,7 @@ function NewCertificate() {
           location: parsed.data.location,
           event_date: parsed.data.event_date,
           background_path: path,
+          phrase: parsed.data.phrase,
         })
         .select("id")
         .single();
@@ -97,6 +100,10 @@ function NewCertificate() {
             <div className="space-y-2">
               <Label htmlFor="title">Título do certificado</Label>
               <Input id="title" value={title} onChange={(e) => setTitle(e.target.value)} maxLength={120} required />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="phrase">Texto de conclusão (ex: "concluiu com êxito o curso")</Label>
+              <Input id="phrase" value={phrase} onChange={(e) => setPhrase(e.target.value)} maxLength={120} required />
             </div>
             <div className="space-y-2">
               <Label htmlFor="course">Nome do curso</Label>

@@ -21,6 +21,7 @@ type Cert = {
   location: string;
   event_date: string;
   background_path: string;
+  phrase: string;
 };
 
 const nameSchema = z
@@ -50,7 +51,7 @@ function PublicCert() {
     (async () => {
       const { data } = await supabase
         .from("certificates")
-        .select("id,title,course_name,location,event_date,background_path")
+        .select("id,title,course_name,location,event_date,background_path,phrase")
         .eq("slug", slug)
         .maybeSingle();
       if (data) {
@@ -81,6 +82,7 @@ function PublicCert() {
         location: cert.location,
         eventDate: cert.event_date,
         backgroundUrl: bgUrl,
+        phrase: cert.phrase,
       });
       await supabase.from("issued_certificates").insert({
         certificate_id: cert.id,

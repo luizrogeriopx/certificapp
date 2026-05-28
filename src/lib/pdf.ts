@@ -7,6 +7,7 @@ export interface CertificateData {
   location: string;
   eventDate: string; // ISO date
   backgroundUrl: string;
+  phrase: string;
 }
 
 async function loadImage(url: string): Promise<HTMLImageElement> {
@@ -61,7 +62,7 @@ export async function generateCertificatePdf(data: CertificateData): Promise<voi
   // Course line
   pdf.setFont("times", "normal");
   pdf.setFontSize(14);
-  const body = `concluiu com êxito o curso "${data.courseName}".`;
+  const body = `${data.phrase} "${data.courseName}".`;
   const lines = pdf.splitTextToSize(body, pageW * 0.7);
   pdf.text(lines, pageW / 2, pageH * 0.62, { align: "center" });
 

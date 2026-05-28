@@ -23,6 +23,7 @@ export type Database = {
           id: string
           location: string
           owner_id: string
+          phrase: string
           slug: string
           title: string
         }
@@ -34,6 +35,7 @@ export type Database = {
           id?: string
           location: string
           owner_id: string
+          phrase?: string
           slug: string
           title: string
         }
@@ -45,6 +47,7 @@ export type Database = {
           id?: string
           location?: string
           owner_id?: string
+          phrase?: string
           slug?: string
           title?: string
         }

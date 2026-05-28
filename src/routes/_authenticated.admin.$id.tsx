@@ -19,6 +19,7 @@ type Cert = {
   location: string;
   event_date: string;
   background_path: string;
+  phrase: string;
 };
 
 type Issuance = { id: string; full_name: string; issued_at: string };
@@ -58,7 +59,7 @@ function CertDetails() {
 
       <div>
         <h1 className="text-2xl font-semibold">{cert.title}</h1>
-        <p className="text-muted-foreground">{cert.course_name}</p>
+        <p className="text-muted-foreground">{cert.phrase} "{cert.course_name}"</p>
       </div>
 
       <Card>
