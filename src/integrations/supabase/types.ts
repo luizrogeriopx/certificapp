@@ -61,6 +61,7 @@ export type Database = {
           full_name: string
           id: string
           issued_at: string
+          phone: string | null
         }
         Insert: {
           certificate_id: string
@@ -69,6 +70,7 @@ export type Database = {
           full_name: string
           id?: string
           issued_at?: string
+          phone?: string | null
         }
         Update: {
           certificate_id?: string
@@ -77,6 +79,7 @@ export type Database = {
           full_name?: string
           id?: string
           issued_at?: string
+          phone?: string | null
         }
         Relationships: [
           {

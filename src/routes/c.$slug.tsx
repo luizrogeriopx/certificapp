@@ -58,6 +58,21 @@ function formatCPF(value: string): string {
     .replace(/(-\d{2})\d+?$/, "$1");
 }
 
+// Phone input masking: (00) 00000-0000 or (00) 0000-0000
+function formatPhone(value: string): string {
+  const clean = value.replace(/\D/g, "");
+  if (clean.length > 10) {
+    return clean.replace(/^(\d{2})(\d{5})(\d{4}).*/, "($1) $2-$3");
+  } else if (clean.length > 6) {
+    return clean.replace(/^(\d{2})(\d{4})(\d{0,4}).*/, "($1) $2-$3");
+  } else if (clean.length > 2) {
+    return clean.replace(/^(\d{2})(\d{0,5})/, "($1) $2");
+  } else if (clean.length > 0) {
+    return clean.replace(/^(\d*)/, "($1");
+  }
+  return clean;
+}
+
 const formSchema = z.object({
   name: z
     .string()
@@ -71,6 +86,10 @@ const formSchema = z.object({
     .min(14, "CPF incompleto")
     .refine((val) => isValidCPF(val), { message: "CPF inválido" }),
   email: z.string().email("E-mail inválido"),
+  phone: z
+    .string()
+    .trim()
+    .min(14, "Telefone incompleto"),
 });
 
 function PublicCert() {
@@ -88,6 +107,7 @@ function PublicCert() {
   const [name, setName] = useState("");
   const [cpf, setCpf] = useState("");
   const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
   const [loading, setLoading] = useState(true);
   const [generating, setGenerating] = useState(false);
 
@@ -113,7 +133,7 @@ function PublicCert() {
     e.preventDefault();
     if (!cert) return;
 
-    const parsed = formSchema.safeParse({ name, cpf, email });
+    const parsed = formSchema.safeParse({ name, cpf, email, phone });
     if (!parsed.success) {
       toast.error(parsed.error.issues[0].message);
       return;
@@ -129,6 +149,7 @@ function PublicCert() {
           full_name: parsed.data.name,
           cpf: parsed.data.cpf.replace(/\D/g, ""), // Save cleaned digits
           email: parsed.data.email,
+          phone: parsed.data.phone.replace(/\D/g, ""), // Save cleaned digits
         })
         .select("id")
         .single();
@@ -138,7 +159,7 @@ function PublicCert() {
       // 2. Build the unique validation URL using the generated ID
       const validationUrl = `${window.location.origin}/c/${slug}/obrigado?id=${issuedData.id}`;
 
-      // 3. Generate the PDF certificate (which embeds the validation QR Code)
+      // 3. Generate the PDF certificate (which embeds the validation QR Code & Verso page)
       const pdfInstance = await generateCertificatePdf({
         title: cert.title,
         fullName: parsed.data.name,
@@ -148,6 +169,9 @@ function PublicCert() {
         backgroundUrl: bgUrl,
         phrase: cert.phrase,
         validationUrl: validationUrl,
+        cpf: parsed.data.cpf,
+        issuedAt: new Date().toISOString(),
+        issuanceId: issuedData.id,
       });
 
       // 4. Extract base64 representation of the generated PDF
@@ -234,17 +258,28 @@ function PublicCert() {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="email">E-mail</Label>
+                <Label htmlFor="phone">Telefone</Label>
                 <Input
-                  id="email"
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="seu.email@exemplo.com"
-                  maxLength={150}
+                  id="phone"
+                  value={phone}
+                  onChange={(e) => setPhone(formatPhone(e.target.value))}
+                  placeholder="(00) 00000-0000"
+                  maxLength={15}
                   required
                 />
               </div>
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="email">E-mail</Label>
+              <Input
+                id="email"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="seu.email@exemplo.com"
+                maxLength={150}
+                required
+              />
             </div>
             <Button type="submit" className="w-full" disabled={generating}>
               {generating ? "Gerando..." : "Gerar certificado"}

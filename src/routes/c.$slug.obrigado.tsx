@@ -51,6 +51,7 @@ function ThankYou() {
             full_name,
             cpf,
             email,
+            phone,
             issued_at,
             certificates (
               title,
