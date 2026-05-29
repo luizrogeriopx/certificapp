@@ -8,6 +8,7 @@ export interface CertificateData {
   eventDate: string; // ISO date
   backgroundUrl: string;
   phrase: string;
+  validationUrl?: string;
 }
 
 async function loadImage(url: string): Promise<HTMLImageElement> {
@@ -29,7 +30,7 @@ function formatDate(iso: string): string {
   });
 }
 
-export async function generateCertificatePdf(data: CertificateData): Promise<void> {
+export async function generateCertificatePdf(data: CertificateData): Promise<jsPDF> {
   const pdf = new jsPDF({ orientation: "landscape", unit: "pt", format: "a4" });
   const pageW = pdf.internal.pageSize.getWidth();
   const pageH = pdf.internal.pageSize.getHeight();
@@ -75,5 +76,21 @@ export async function generateCertificatePdf(data: CertificateData): Promise<voi
     { align: "center" },
   );
 
+  // QR Code Verification
+  if (data.validationUrl) {
+    try {
+      const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(data.validationUrl)}`;
+      const qrImg = await loadImage(qrCodeUrl);
+      pdf.addImage(qrImg, "PNG", pageW - 110, pageH - 110, 70, 70);
+      
+      pdf.setFontSize(8);
+      pdf.setTextColor(120, 120, 120);
+      pdf.text("Valide este certificado", pageW - 75, pageH - 30, { align: "center" });
+    } catch (e) {
+      console.error("Failed to add QR Code to PDF:", e);
+    }
+  }
+
   pdf.save(`certificado-${data.fullName.replace(/\s+/g, "-").toLowerCase()}.pdf`);
+  return pdf;
 }

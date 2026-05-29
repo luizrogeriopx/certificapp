@@ -56,18 +56,24 @@ export type Database = {
       issued_certificates: {
         Row: {
           certificate_id: string
+          cpf: string | null
+          email: string | null
           full_name: string
           id: string
           issued_at: string
         }
         Insert: {
           certificate_id: string
+          cpf?: string | null
+          email?: string | null
           full_name: string
           id?: string
           issued_at?: string
         }
         Update: {
           certificate_id?: string
+          cpf?: string | null
+          email?: string | null
           full_name?: string
           id?: string
           issued_at?: string
