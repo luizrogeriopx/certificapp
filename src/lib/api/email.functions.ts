@@ -29,7 +29,7 @@ export const sendCertificateEmail = createServerFn({ method: "POST" })
         body: JSON.stringify({
           from: "Certificados <onboarding@resend.dev>",
           to: email,
-          subject: `Seu Certificado - ${courseName}`,
+          subject: `CERTIFICADO | ${courseName.toUpperCase()}`,
           html: `
             <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e2e8f0; rounded: 8px;">
               <h2 style="color: #1a202c; margin-bottom: 20px;">Seu certificado está pronto!</h2>
